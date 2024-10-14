@@ -1,10 +1,10 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import Home from './pages/TeacherCreate'
-import Home from './pages/StudentParentCreate'
-import Home from './pages/DeleteTeacher'
-import Home from './pages/DeleteStudentParent'
+import TeacherCreate from './pages/TeacherCreate'
+import StudentParentCreate from './pages/StudentParentCreate'
+import DeleteTeacher from './pages/DeleteTeacher'
+import DeleteStudentParent from './pages/DeleteStudentParent'
 
 const App = () => {
   return (
