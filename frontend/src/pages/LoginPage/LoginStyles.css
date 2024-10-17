@@ -1,8 +1,4 @@
-.LoginTitle {
-    font-size: x-large;
-    font-weight: bold;
-}
-
+/* General layout */
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -13,59 +9,108 @@
     margin: 0;
 }
 
+.Title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
 .LoginContainer {
     width: 75%;
-    height: auto;
-    margin-top: 10%;
     background-color: lightblue;
     border: 2px solid black;
     border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
     padding: 20px;
+    margin-top: 5%;
 }
 
-/* Input boxes for the form */
+.LoginTitle {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.FormContainer {
+width: 80%;
+margin:auto;
+}
+
+/* Input box styling */
 .input-box {
     width: 100%;
-    padding: 0px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+    font-size: 1rem;
 }
 
 /* Button styling */
-button {
+.login-button {
     background-color: #4CAF50;
     color: white;
-    padding: 15px 20px;
+    padding: 15px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
     width: 100%;
+    font-size: 1rem;
+    margin-top: 20px;
     text-align: center;
 }
 
-button:hover {
+.login-button:hover {
     background-color: #45a049;
 }
 
-/* Styling for the "Remember me" and "Forgot password" section */
+/* Remember me and forgot password section */
 .remember-forgot {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    align-items: center;
     margin: 10px 0;
 }
 
+.remember-checkbox {
+    display: inline-flex; /* Change to inline-flex to align checkbox and text */
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.remember-checkbox input {
+    margin-right: 5px; /* Add spacing between checkbox and text */
+}
+
+/* Forgot password link */
+.forgot-link {
+    font-size: 0.9rem;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* Register section */
 .register-link {
-    margin-top: 15px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.register-link a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
 }

@@ -8,8 +8,11 @@ const Login = () => {
                 OnTask
             </div>
             <div className="LoginContainer">
-                <h1 className="LoginTitle">Teacher Login</h1>
                 <form action="">
+                    <div className="FormContainer">
+
+                    <h1 className="LoginTitle">Login</h1>
+
                     <div className="input-box">
                         <input type="text" placeholder="Username" required />
                     </div>
@@ -18,19 +21,22 @@ const Login = () => {
                     </div>
 
                     <div className="remember-forgot">
-                        <label><input type="checkbox" />Remember me</label>
-                        <a href="#">Forgot password?</a>
+                        <label className="remember-checkbox">
+                            <input type="checkbox" /> Remember me
+                        </label>
+                        <a href="#" className="forgot-link">Forgot password?</a>
                     </div>
 
-                    <button type="submit">Login</button>
+                    <button type="submit" className="login-button">Login</button>
 
                     <div className="register-link">
                         <p>Don't have an account? <a href="#">Register</a></p>
                     </div>
+                    </div>
                 </form>
             </div>
         </div>
-    )
+    );
 };
 
 export default Login;
