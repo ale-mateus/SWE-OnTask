@@ -1,0 +1,61 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid black;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+  }
+  
+  .Title {
+    margin-top: 7%;
+    font-weight: bold;
+    font-size:xx-large;
+  }
+  
+  .container {
+    width: 75%;
+    height: 50%;
+    margin-top: 15%;
+    background-color: lightblue;
+    border: 2px solid black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column; /* Aligns content vertically */
+    justify-content: space-between; /* Space between text and buttons */
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .container p {
+    color: black;
+    font-size: large;
+    font-weight: bold;
+  }
+  
+  /* Buttons container at the bottom of the div */
+  .Buttons {
+    border: 1px solid #45a049;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    margin-bottom: 10px; /* Adjust distance from the bottom */
+  }
+  
+  /* Button styling */
+  .teacher-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .teacher-button:hover {
+    background-color: #45a049;
+  }

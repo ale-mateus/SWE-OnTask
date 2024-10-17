@@ -1,0 +1,71 @@
+.LoginTitle {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+}
+
+.LoginContainer {
+    width: 75%;
+    height: auto;
+    margin-top: 10%;
+    background-color: lightblue;
+    border: 2px solid black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Input boxes for the form */
+.input-box {
+    width: 100%;
+    padding: 0px;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Styling for the "Remember me" and "Forgot password" section */
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.register-link {
+    margin-top: 15px;
+}
