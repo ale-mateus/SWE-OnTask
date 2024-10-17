@@ -5,6 +5,7 @@ import TeacherCreate from './pages/TeacherCreate'
 import StudentParentCreate from './pages/StudentParentCreate'
 import DeleteTeacher from './pages/DeleteTeacher'
 import DeleteStudentParent from './pages/DeleteStudentParent'
+import Schedule from './Schedule.jsx'
 
 const App = () => {
   return (
