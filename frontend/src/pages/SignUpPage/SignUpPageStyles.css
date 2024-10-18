@@ -34,28 +34,66 @@
     font-size: large;
     font-weight: bold;
   }
+
+  .container h1 {
+    color: black;
+    font-size: x-large;
+    font-weight: bold;
+  }
+
+  .RoleFormContainer {
+    width: 75%;
+    display: flex;
+    flex-direction: column; /* Ensure elements stack vertically */
+    gap: 10px; /* Add your desired gap here */
+}
   
   /* Buttons container at the bottom of the div */
-  .Buttons {
-    border: 1px solid #45a049;
+  .RoleButtonsContainer {
     width: 100%;
-    display: flex;
+    display: inline-flex;
+    gap: 20%;
     justify-content: center; /* Center the buttons horizontally */
     margin-bottom: 10px; /* Adjust distance from the bottom */
   }
   
-  /* Button styling */
-  .teacher-button {
-    background-color: #4CAF50;
-    color: white;
+  .role-button {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
     border: none;
     cursor: pointer;
-  }
-  
-  .teacher-button:hover {
-    background-color: #45a049;
-  }
+}
+
+/* Active button styling */
+.role-button.active {
+    background-color: #45a049; /* Change to the desired active color */
+    color: black; /* Change text color if needed */
+}
+
+/* Optional: Hover state */
+.role-button:hover {
+    background-color: #45a049; /* Change this as needed */
+}
+
+.SubmitButtonContainer{
+  display: flex; /* Use flex to align content */
+  justify-content: flex-end; /* Align the button to the right */
+  width: 100%; /* Make sure it takes full width */
+}
+
+.sign-up-button {
+  background-color: #4CAF50; /* Green background */
+  color: black; /* White text */
+  padding: 10px 20px; /* Padding for the button */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.sign-up-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}

@@ -37,7 +37,8 @@
   
   /* Buttons container at the bottom of the div */
   .LandingButton {
-    width: 100%;
+    width: 80%;
+    font-weight: bold;
     display: flex;
     justify-content: center; /* Center the buttons horizontally */
     margin-bottom: 10px; /* Adjust distance from the bottom */

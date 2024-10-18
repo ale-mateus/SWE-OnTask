@@ -30,7 +30,7 @@ const Login = () => {
                     <button type="submit" className="login-button">Login</button>
 
                     <div className="register-link">
-                        <p>Don't have an account? <a href="#">Register</a></p>
+                        <p>Don't have an account? <a href="/signup">Sign up</a></p>
                     </div>
                     </div>
                 </form>
