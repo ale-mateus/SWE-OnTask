@@ -1,7 +1,7 @@
 [build]
-  publish = "build" # or "dist" depending on your setup
+  publish = "frontend/build"
   command = "npm run build"
 
 [dev]
   command = "npm start"
-  publish = "build" # or "dist" depending on your setup
+  publish = "frontend/build"

@@ -1,9 +1,9 @@
 import { useAuthContext } from './useAuthContext'
-import { useWorkoutsContext } from './useWorkoutsContext'
+import { useEventsContext } from './useEventsContext'
 
 export const useLogout = () => {
   const { dispatch } = useAuthContext()
-  const { dispatch: dispatchWorkouts } = useWorkoutsContext()
+  const { dispatch: dispatchWorkouts } = useEventsContext()
 
   const logout = () => {
     // remove user from storage
@@ -11,7 +11,7 @@ export const useLogout = () => {
 
     // dispatch logout action
     dispatch({ type: 'LOGOUT' })
-    dispatchWorkouts({ type: 'SET_WORKOUTS', payload: null })
+    dispatchWorkouts({ type: 'SET_EVENTS', payload: null })
   }
 
   return { logout }
