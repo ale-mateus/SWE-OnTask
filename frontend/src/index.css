@@ -186,3 +186,9 @@ form.signup, form.login {
   color: #333;
   text-decoration: none;
 }
+
+.trash-icon {
+  cursor: pointer;
+  color: var(--error);
+  margin-left: 10px;
+}
