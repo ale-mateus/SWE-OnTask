@@ -12,6 +12,7 @@ const EventForm = ({ fetchEvents }) => {
   const [endTime, setEndTime] = useState('');
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,6 +74,7 @@ const EventForm = ({ fetchEvents }) => {
         console.log("Event dispatched:", json);
         dispatch({ type: 'CREATE_EVENT', payload: { ...json, id: json._id } });
         fetchEvents();
+        closeModal();
       }
     } catch (error) {
       console.error('Fetch error:', error); // Log any network errors
@@ -80,45 +82,74 @@ const EventForm = ({ fetchEvents }) => {
     }
   };
 
+  // Function to open the modal
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <form className="create" onSubmit={handleSubmit}>
-      <h3>Add a New Event</h3>
+    <>
+      {/* Add Event Button */}
+      <button onClick={openModal} className="add-event-button">
+        Add Event
+      </button>
 
-      <label>Event Title:</label>
-      <input 
-        type="text"
-        onChange={(e) => setText(e.target.value)}
-        value={text}
-        className={emptyFields.includes('text') ? 'error' : ''}
-      />
+      {/* Modal Popup */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <form className="create" onSubmit={handleSubmit}>
+              <h3>Add a New Event</h3>
 
-      <label>Date:</label>
-      <input 
-        type="date"
-        onChange={(e) => setDate(e.target.value)}
-        value={date}
-        className={emptyFields.includes('date') ? 'error' : ''}
-      />
+              <label>Event Title:</label>
+              <input 
+                type="text"
+                onChange={(e) => setText(e.target.value)}
+                value={text}
+                className={emptyFields.includes('text') ? 'error' : ''}
+              />
 
-      <label>Start Time:</label>
-      <input 
-        type="time"
-        onChange={(e) => setStartTime(e.target.value)}
-        value={startTime}
-        className={emptyFields.includes('startTime') ? 'error' : ''}
-      />
+              <label>Date:</label>
+              <input 
+                type="date"
+                onChange={(e) => setDate(e.target.value)}
+                value={date}
+                className={emptyFields.includes('date') ? 'error' : ''}
+              />
 
-      <label>End Time:</label>
-      <input 
-        type="time"
-        onChange={(e) => setEndTime(e.target.value)}
-        value={endTime}
-        className={emptyFields.includes('endTime') ? 'error' : ''}
-      />
+              <label>Start Time:</label>
+              <input 
+                type="time"
+                onChange={(e) => setStartTime(e.target.value)}
+                value={startTime}
+                className={emptyFields.includes('startTime') ? 'error' : ''}
+              />
 
-      <button>Add Event</button>
-      {error && <div className="error">{error}</div>}
-    </form>
+              <label>End Time:</label>
+              <input 
+                type="time"
+                onChange={(e) => setEndTime(e.target.value)}
+                value={endTime}
+                className={emptyFields.includes('endTime') ? 'error' : ''}
+              />
+
+              <button type="submit">Add Event</button>
+              {error && <div className="error">{error}</div>}
+
+              {/* Close Button */}
+              <button type="button" onClick={closeModal} className="close-modal">
+                Close
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
