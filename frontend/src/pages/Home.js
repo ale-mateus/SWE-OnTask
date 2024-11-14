@@ -3,7 +3,6 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useEventsContext } from '../hooks/useEventsContext'; 
 import CalendarNav from '../components/CalendarNav';
 import Calendar from '../components/Calendar';
-import EventForm from '../components/CalendarForm';
 
 const Home = () => {
   const { user } = useAuthContext();
@@ -84,8 +83,6 @@ const Home = () => {
           onEditEvent={handleEditEvent} 
         />
       </div>
-      {/* Render EventForm only if user is not a student */}
-      {user?.role !== 'student' && <EventForm fetchEvents={fetchEvents} />}
     </div>
   );
 }
