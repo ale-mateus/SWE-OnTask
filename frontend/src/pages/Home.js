@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useEventsContext } from '../hooks/useEventsContext'; 
 import CalendarNav from '../components/CalendarNav';
 import Calendar from '../components/Calendar';
-import EventForm from '../components/CalendarForm';
 
 const Home = () => {
   const { user } = useAuthContext();
-  const { events, dispatch: eventDispatch } = useEventsContext();
+  const { events = [], dispatch: eventDispatch } = useEventsContext(); // Default to an empty array
   const currentDate = new Date().toISOString().split('T')[0]; 
   const [startDate, setStartDate] = useState(currentDate);
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     const response = await fetch('/api/events', {
       headers: { 'Authorization': `Bearer ${user.token}` },
     });
@@ -30,13 +29,13 @@ const Home = () => {
     } else {
       console.error("Error fetching events:", json);
     }
-  };
+  }, [user, eventDispatch]);
 
   useEffect(() => {
     if (user) {
       fetchEvents();
     }
-  }, [fetchEvents, eventDispatch, user]);
+  }, [fetchEvents, user]);
 
   // DELETE event handler
   const handleDeleteEvent = async (eventId) => {
@@ -84,7 +83,6 @@ const Home = () => {
           onEditEvent={handleEditEvent} 
         />
       </div>
-      <EventForm fetchEvents={fetchEvents} />
     </div>
   );
 }

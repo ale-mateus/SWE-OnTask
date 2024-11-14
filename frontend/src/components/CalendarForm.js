@@ -10,96 +10,97 @@ const EventForm = ({ fetchEvents }) => {
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [color, setColor] = useState('');  // Color state
+  const [type, setType] = useState('');    // Type state
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!user) {
       setError('You must be logged in');
       return;
     }
-  
-    if (!date || !startTime || !endTime) {
+
+    if (!date || !startTime || !endTime || !type) {  // Make sure type is included here
       setError('Please fill in all fields');
       return;
     }
-  
-    // Combine date and time into a single datetime string
+
     const start = new Date(`${date}T${startTime}Z`);
     const end = new Date(`${date}T${endTime}Z`);
-    
-    // Check if the dates are valid
+
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       setError('Invalid date or time provided');
       return;
     }
-  
-    // Convert to UTC before sending to the server
+
     const event = { 
       text,
-      start: start.toISOString(),  // This will be in UTC
-      end: end.toISOString(),      // This will be in UTC
-      user_id: user.id // Ensure your event model accepts user_id
+      color,  // Send selected color
+      type,   // Send selected type
+      start: start.toISOString(),
+      end: end.toISOString(),
+      user_id: user.id
     };
-  
+
     console.log("Sending event:", event);
-  
+
     try {
       const response = await fetch('/api/events', {
         method: 'POST',
         body: JSON.stringify(event),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`, // Ensure user.token is defined
+          'Authorization': `Bearer ${user.token}`,
         },
       });
-  
-      // Handle the response
+
       if (!response.ok) {
-        const json = await response.json(); // Attempt to parse the JSON
-        setError(json.error || 'Something went wrong'); // Provide a fallback error message
-        setEmptyFields(json.emptyFields || []); // Ensure emptyFields is defined
-        console.log("Error:", json.error);
+        const json = await response.json();
+        setError(json.error || 'Something went wrong');
+        setEmptyFields(json.emptyFields || []);
       } else {
-        const json = await response.json(); // Parse JSON if the response is OK
+        const json = await response.json();
         setText('');
         setDate('');
         setStartTime('');
         setEndTime('');
+        setColor('');
+        setType('');  // Reset type
         setError(null);
         setEmptyFields([]);
-        console.log("Event dispatched:", json);
         dispatch({ type: 'CREATE_EVENT', payload: { ...json, id: json._id } });
-        fetchEvents();
         closeModal();
       }
     } catch (error) {
-      console.error('Fetch error:', error); // Log any network errors
+      console.error('Fetch error:', error);
       setError('An error occurred while creating the event.');
     }
   };
 
-  // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  // Array of available colors
+  const colorOptions = ['red', 'green', 'blue', 'purple'];
+
+  // Array of available event types
+  const typeOptions = ['meeting', 'workshop', 'social', 'other'];
+
   return (
     <>
-      {/* Add Event Button */}
       <button onClick={openModal} className="add-event-button">
         Add Event
       </button>
 
-      {/* Modal Popup */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -107,15 +108,43 @@ const EventForm = ({ fetchEvents }) => {
               <h3>Add a New Event</h3>
 
               <label>Event Title:</label>
-              <input 
+              <input
                 type="text"
                 onChange={(e) => setText(e.target.value)}
                 value={text}
                 className={emptyFields.includes('text') ? 'error' : ''}
               />
 
+              {/* Event Type Selection */}
+              <label>Event Type:</label>
+              <select
+                onChange={(e) => setType(e.target.value)}
+                value={type}
+                className={emptyFields.includes('type') ? 'error' : ''}
+              >
+                <option value="">Select type</option>
+                {typeOptions.map((typeOption) => (
+                  <option key={typeOption} value={typeOption}>
+                    {typeOption}
+                  </option>
+                ))}
+              </select>
+
+              {/* Event Color Selection as Circles */}
+              <label>Event Color:</label>
+              <div className="color-picker">
+                {colorOptions.map((colorOption) => (
+                  <div
+                    key={colorOption}
+                    className={`color-circle ${color === colorOption ? 'selected' : ''}`}
+                    style={{ backgroundColor: colorOption }}
+                    onClick={() => setColor(colorOption)}
+                  />
+                ))}
+              </div>
+
               <label>Date:</label>
-              <input 
+              <input
                 type="date"
                 onChange={(e) => setDate(e.target.value)}
                 value={date}
@@ -123,7 +152,7 @@ const EventForm = ({ fetchEvents }) => {
               />
 
               <label>Start Time:</label>
-              <input 
+              <input
                 type="time"
                 onChange={(e) => setStartTime(e.target.value)}
                 value={startTime}
@@ -131,17 +160,16 @@ const EventForm = ({ fetchEvents }) => {
               />
 
               <label>End Time:</label>
-              <input 
+              <input
                 type="time"
                 onChange={(e) => setEndTime(e.target.value)}
                 value={endTime}
                 className={emptyFields.includes('endTime') ? 'error' : ''}
               />
 
-              <button type="submit">Add Event</button>
+              <button type="submit" className="submit">Add Event</button>
               {error && <div className="error">{error}</div>}
 
-              {/* Close Button */}
               <button type="button" onClick={closeModal} className="close-modal">
                 Close
               </button>
