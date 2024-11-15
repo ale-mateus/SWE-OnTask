@@ -67,7 +67,7 @@ header a {
   color: #333;
 }
 
-/* new workout form */
+/* form */
 label, input {
   display: block;
 }
@@ -233,7 +233,7 @@ form.login button:hover{
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  width: 300px;
+  width: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -260,6 +260,7 @@ form.login button:hover{
 
 .add-event-button:hover {
   background-color: #179C74;
+  color: #fff;
   transform: scale(1.05);
 }
 
@@ -310,4 +311,72 @@ form.login button:hover{
 
 .color-circle.selected {
   border: 2px solid #000;
+}
+
+.plus-button, .event-type {
+  background: #fff;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: "Poppins";
+  cursor: pointer;
+  font-size: 1em;
+  margin: 5px;
+}
+
+.plus-button {
+  font-weight: bold;
+}
+
+.event-type {
+  display: inline-flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.event-type-section {
+  display: flex;
+  align-items: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.submit, .close-modal {
+  background: #fff;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit:hover{
+  color:#fff;
 }
