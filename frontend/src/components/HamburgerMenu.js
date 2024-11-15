@@ -15,7 +15,6 @@ const HamburgerMenu = () => {
             {/* Add links here once Account and Calendar pages are developed */}
             <Link to="/account">Account</Link>
             <Link to="/">Calendar</Link>
-            <Link to="/To-Do">To-Do</Link>
           </nav>
         </div>
       )}
