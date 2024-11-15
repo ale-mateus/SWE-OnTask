@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEventsContext } from "../hooks/useEventsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
 
-const EventForm = ({ fetchEvents }) => {
+const EventForm = () => {
   const { dispatch } = useEventsContext();
   const { user } = useAuthContext();
 
@@ -18,25 +18,25 @@ const EventForm = ({ fetchEvents }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!user) {
       setError('You must be logged in');
       return;
     }
-
+  
     if (!date || !startTime || !endTime || !type) {  // Make sure type is included here
       setError('Please fill in all fields');
       return;
     }
-
+  
     const start = new Date(`${date}T${startTime}Z`);
     const end = new Date(`${date}T${endTime}Z`);
-
+  
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       setError('Invalid date or time provided');
       return;
     }
-
+  
     const event = { 
       text,
       color,  // Send selected color
@@ -45,9 +45,9 @@ const EventForm = ({ fetchEvents }) => {
       end: end.toISOString(),
       user_id: user.id
     };
-
+  
     console.log("Sending event:", event);
-
+  
     try {
       const response = await fetch('/api/events', {
         method: 'POST',
@@ -57,7 +57,7 @@ const EventForm = ({ fetchEvents }) => {
           'Authorization': `Bearer ${user.token}`,
         },
       });
-
+  
       if (!response.ok) {
         const json = await response.json();
         setError(json.error || 'Something went wrong');
@@ -73,13 +73,16 @@ const EventForm = ({ fetchEvents }) => {
         setError(null);
         setEmptyFields([]);
         dispatch({ type: 'CREATE_EVENT', payload: { ...json, id: json._id } });
-        closeModal();
+        
+        // Refresh the page after event creation
+        window.location.reload();
       }
     } catch (error) {
       console.error('Fetch error:', error);
       setError('An error occurred while creating the event.');
     }
   };
+  
 
   const openModal = () => {
     setIsModalOpen(true);

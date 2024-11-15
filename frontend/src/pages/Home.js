@@ -22,9 +22,10 @@ const Home = () => {
         text: event.text,
         start: event.start,
         end: event.end,
-        backColor: event.backColor || "#ffffff",
+        backColor: event.color || "#ffffff",
         participants: event.participants || 0,
       }));
+      console.log("Mapped Events Array: ", mappedEvents); 
       eventDispatch({ type: 'SET_EVENTS', payload: mappedEvents });
     } else {
       console.error("Error fetching events:", json);
