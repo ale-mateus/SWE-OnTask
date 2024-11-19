@@ -198,6 +198,10 @@ nav button:hover{
   cursor: pointer;
   width: 100%;
 }
+.login-form button:hover {
+  transform: scale(1.02);
+  background-color: #179C74;
+}
 
 .login-form button:disabled {
   background: #ddd;
@@ -250,10 +254,13 @@ form.signup button:hover{
   transform: scale(1.05);
 }
 
+/* Not needed after changing Login Page UI*/
+/*
 form.login button:hover{
   transform: scale(1.05);
   background-color: #179C74;
 }
+*/
 
 .RoleButtonsContainer {
   width: 100%;
