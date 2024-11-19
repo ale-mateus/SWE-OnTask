@@ -23,7 +23,7 @@ const Signup = () => {
       <div className="login-content">
         <div className="left-section">
           <h2>Welcome to OnTask!</h2>
-          <p>This website is made to to enhance communication among teachers, parents, and students. Users can track assignments, view announcements, and access a weekly calendar. Our platform improves organization and clarity, ensuring a user-friendly experience while safeguarding sensitive information.</p>
+          <p>This website is made to enhance communication among teachers, parents, and students. Users can track assignments, view announcements, and access a weekly calendar. Our platform improves organization and clarity, ensuring a user-friendly experience while safeguarding sensitive information.</p>
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
           <h3>Sign Up</h3>
