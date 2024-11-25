@@ -4,14 +4,18 @@ import { useSignup } from "../hooks/useSignup";
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signup, error, isLoading } = useSignup();
+  const { signup, error, isLoading, signupClass } = useSignup();
   const [selectedRole, setSelectedRole] = useState('student');
+  const [code, setCode] = useState('');
+  const [classroomName, setClassroomName] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Pass email, password, and selected role to signup
     await signup(email, password, selectedRole);
+
+    selectedRole === 'teacher' && await signupClass(email, classroomName, code);
   };
 
   const handleButtonClick = (buttonName) => {
@@ -32,7 +36,11 @@ const Signup = () => {
       {selectedRole === 'teacher' && (
         <>
           <label>Class Name:</label>
-          <input type="text" name="className" required />
+          <input 
+            type="classroomName" 
+            onChange={(e) => setClassroomName(e.target.value)} 
+            value={classroomName} 
+          />
           <label>Name:</label>
           <input type="text" name="name" required />
         </>
@@ -50,6 +58,13 @@ const Signup = () => {
         type="password" 
         onChange={(e) => setPassword(e.target.value)} 
         value={password} 
+      />
+
+      <label>Class Code:</label>
+      <input 
+        type="code" 
+        onChange={(e) => setCode(e.target.value)} 
+        value={code} 
       />
       
       <div className="RoleButtonsContainer">

@@ -33,5 +33,35 @@ export const useSignup = () => {
     }
   };
 
-  return { signup, isLoading, error };
+  const signupClass = async (email, classroomName, code) => {
+    console.log("testing")
+    setIsLoading(true);
+    setError(null);
+
+    const token = localStorage.getItem('token'); // Ensure the token exists
+    console.log("Sending token:", token);
+    const response = await fetch('/api/classes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Correct format
+      },
+      body: JSON.stringify({ email, classroomName, code })
+});
+    const json = await response.json();
+
+    if (!response.ok) {
+      setIsLoading(false);
+      setError(json.error);
+    }
+    if (response.ok) {
+      // save the user to local storage
+      localStorage.setItem('class', JSON.stringify(json));
+
+      // update loading state
+      setIsLoading(false);
+    }
+  };
+
+  return { signup, isLoading, error, signupClass };
 };
