@@ -6,17 +6,18 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const { signup, error, isLoading, signupClass } = useSignup();
   const [selectedRole, setSelectedRole] = useState('student');
-  const [code, setCode] = useState('');
-  const [classroomName, setClassroomName] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Pass email, password, and selected role to signup
-    await signup(email, password, selectedRole);
 
-    selectedRole === 'teacher' && await signupClass(email, classroomName, code);
+    await signup(email, password, selectedRole);
   };
+/*
+  const handleClassClick = async (e) => {
+    e.preventDefault()
+
+    await signupClass(email, classroomName, code);
+  }*/
 
   const handleButtonClick = (buttonName) => {
     setSelectedRole(buttonName === selectedRole ? selectedRole : buttonName);
@@ -26,25 +27,8 @@ const Signup = () => {
     <form className="signup" onSubmit={handleSubmit}>
       <h3>Sign Up</h3>
       
-      {selectedRole === 'student' && (
-        <>
-          <label>Student Name:</label>
-          <input type="text" name="name" required />
-        </>
-      )}
-      
-      {selectedRole === 'teacher' && (
-        <>
-          <label>Class Name:</label>
-          <input 
-            type="classroomName" 
-            onChange={(e) => setClassroomName(e.target.value)} 
-            value={classroomName} 
-          />
-          <label>Name:</label>
-          <input type="text" name="name" required />
-        </>
-      )}
+      <label>Name:</label>
+      <input type="text" name="name" required />
       
       <label>Email address:</label>
       <input 
@@ -52,19 +36,12 @@ const Signup = () => {
         onChange={(e) => setEmail(e.target.value)} 
         value={email} 
       />
-      
+
       <label>Password:</label>
       <input 
         type="password" 
         onChange={(e) => setPassword(e.target.value)} 
         value={password} 
-      />
-
-      <label>Class Code:</label>
-      <input 
-        type="code" 
-        onChange={(e) => setCode(e.target.value)} 
-        value={code} 
       />
       
       <div className="RoleButtonsContainer">
@@ -89,5 +66,6 @@ const Signup = () => {
     </form>
   );
 };
+
 
 export default Signup;
