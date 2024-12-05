@@ -66,8 +66,12 @@ const Signup = () => {
           I'm a Teacher
         </button>
       </div>
-    </div>
-  );
+      
+      <button disabled={isLoading}>Sign up</button>
+          {error && <div className="error">{error}</div>}
+        </form>
+
+);
 };
 
 

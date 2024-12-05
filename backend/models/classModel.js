@@ -17,7 +17,7 @@ const classSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: false
   }
 });
 

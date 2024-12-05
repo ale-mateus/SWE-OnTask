@@ -14,71 +14,75 @@ const ClassroomForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!user) {
       setError('You must be logged in');
       return;
     }
-
-    // Validate form fields
+  
     if (!classroomName || !code || !email) {
       setError('Please fill in all fields');
       return;
     }
-
+  
     try {
       const response = await fetch('/api/classes', {
         method: 'POST',
-        body: JSON.stringify({classroomName, code, email}),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`,
         },
+        body: JSON.stringify({ classroomName, code, email }),
       });
-
+  
       if (!response.ok) {
-        const json = await response.json();
-        setError(json.error || 'Something went wrong');
-      } else {
-        const json = await response.json();
-        // Save the class info to local storage
-        localStorage.setItem('class', JSON.stringify(json));
-
-        // Update the class context
-        dispatch({ type: 'CREATE_CLASS', payload: { ...json, id: json._id } });
-
-        window.location.reload(); // Reload the page to reflect the new class
+        const errorData = await response.json();
+  
+        // Check for duplicate key error
+        if (errorData.code !== 11000) {
+            setError('Code already in use. Please select a different code.');
+          }
+        else {
+          setError('Failed to create class. Please try again.');
+        }
+        console.error('Error creating class:', errorData);
+        return;
       }
-
-      // response again
+  
+      const classData = await response.json();
+      dispatch({ type: 'CREATE_CLASS', payload: classData });
+  
       const responseTwo = await fetch('/api/user', {
-        method: 'PATCH', // or PUT depending on your API design
+        method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`,
-          },
-          body: JSON.stringify({
-            email: user.email,  // Include the user's email for identification
-            newCode: code,   // Include the new code
-          }),
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ email: user.email, newCode: code }),
       });
-
-      const jsonTwo = await responseTwo.json();
-
+  
       if (!responseTwo.ok) {
-        throw new Error(jsonTwo.error || 'Failed to update code');
+        const errorTextTwo = await responseTwo.text();
+        console.error('Error updating user code:', errorTextTwo);
+        /*setError('Failed to update user code.');*/
+        return;
       }
-      else {
-        localStorage.setItem('class', JSON.stringify(jsonTwo));
-        dispatch({ type: 'UPDATE_CODE', payload: { code: code } });
-      }
-
-    } catch (error) {
-      console.error('Fetch error:', error);
-      setError('An error occurred while creating the class.');
+  
+      const updatedUser = await responseTwo.json();
+  
+      // Update the user context
+      dispatch({ type: 'UPDATE_USER', payload: updatedUser });
+  
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError('An unexpected error occurred.');
     }
   };
-
+  
+  
+  
+  
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 

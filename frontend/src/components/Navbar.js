@@ -34,7 +34,7 @@ const Navbar = ({ fetchEvents }) => {
               <button onClick={handleClick} style={{ marginLeft: '1rem' }}>Log out</button>
               {user.role === 'teacher' && (
                 <div style={{ marginLeft: '1rem' }}>
-                  {user.code === '' && <ClassroomForm />}
+                  {!user.code && <ClassroomForm />}
                   <EventForm fetchEvents={fetchEvents} />
                 </div>
               )}
