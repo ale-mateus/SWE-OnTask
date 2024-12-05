@@ -8,7 +8,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     text: event.text,
     start: new Date(event.start).toISOString(),
     end: new Date(event.end).toISOString(),
-    backColor: event.color || "#ffffff",
+    backColor: event.backColor,
     participants: event.participants || 0,
   }));
 
@@ -19,6 +19,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     events: formattedEvents,
     
     onBeforeEventRender: args => {
+      args.data.backColor = args.data.backColor || "#ffffff"; // Fallback to white if no color
       args.data.html = `
         <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
           <div>${args.data.text}</div>

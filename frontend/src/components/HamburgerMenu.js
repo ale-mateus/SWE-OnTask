@@ -14,7 +14,7 @@ const HamburgerMenu = () => {
           <nav className="menu-content">
             {/* Add links here once Account and Calendar pages are developed */}
             <Link to="/account">Account</Link>
-            <Link to="/calendar">Calendar</Link>
+            <Link to="/">Calendar</Link>
           </nav>
         </div>
       )}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEventsContext } from "../hooks/useEventsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
 
-const EventForm = ({ fetchEvents }) => {
+const EventForm = () => {
   const { dispatch } = useEventsContext();
   const { user } = useAuthContext();
 
@@ -10,11 +10,12 @@ const EventForm = ({ fetchEvents }) => {
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [color, setColor] = useState('');  // Color state
-  const [type, setType] = useState('');    // Type state
+  const [color, setColor] = useState('');
+  const [type, setType] = useState('');
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [typeOptions, setTypeOptions] = useState(['Homework', 'Test', 'Document', 'Other']);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ const EventForm = ({ fetchEvents }) => {
       return;
     }
 
-    if (!date || !startTime || !endTime || !type) {  // Make sure type is included here
+    if (!date || !startTime || !endTime || !type) {
       setError('Please fill in all fields');
       return;
     }
@@ -39,14 +40,12 @@ const EventForm = ({ fetchEvents }) => {
 
     const event = { 
       text,
-      color,  // Send selected color
-      type,   // Send selected type
+      color,
+      type,
       start: start.toISOString(),
       end: end.toISOString(),
       user_id: user.id
     };
-
-    console.log("Sending event:", event);
 
     try {
       const response = await fetch('/api/events', {
@@ -69,11 +68,12 @@ const EventForm = ({ fetchEvents }) => {
         setStartTime('');
         setEndTime('');
         setColor('');
-        setType('');  // Reset type
+        setType('');
         setError(null);
         setEmptyFields([]);
         dispatch({ type: 'CREATE_EVENT', payload: { ...json, id: json._id } });
-        closeModal();
+
+        window.location.reload();
       }
     } catch (error) {
       console.error('Fetch error:', error);
@@ -81,25 +81,17 @@ const EventForm = ({ fetchEvents }) => {
     }
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Array of available colors
-  const colorOptions = ['red', 'green', 'blue', 'purple'];
-
-  // Array of available event types
-  const typeOptions = ['meeting', 'workshop', 'social', 'other'];
+  const colorOptions = [
+    'Black', 'Grey', 'Red', 'OrangeRed', 'MediumVioletRed',
+    'Purple', 'BlueViolet', 'RoyalBlue', 'DarkBlue', 'ForestGreen'
+  ];
 
   return (
     <>
-      <button onClick={openModal} className="add-event-button">
-        Add Event
-      </button>
+      <button onClick={openModal} className="add-event-button">Add Event</button>
 
       {isModalOpen && (
         <div className="modal-overlay">
@@ -115,25 +107,35 @@ const EventForm = ({ fetchEvents }) => {
                 className={emptyFields.includes('text') ? 'error' : ''}
               />
 
-              {/* Event Type Selection */}
               <label>Event Type:</label>
-              <select
-                onChange={(e) => setType(e.target.value)}
-                value={type}
-                className={emptyFields.includes('type') ? 'error' : ''}
-              >
-                <option value="">Select type</option>
-                {typeOptions.map((typeOption) => (
-                  <option key={typeOption} value={typeOption}>
+              <div className="event-types">
+                {typeOptions.map(typeOption => (
+                  <button
+                    key={typeOption}
+                    type="button"
+                    className="event-type-button"
+                    onClick={() => setType(typeOption)}
+                    style={{
+                      background: type === typeOption ? 'var(--primary)' : '#fff',
+                      color: type === typeOption ? '#fff' : 'var(--primary)',
+                      border: '2px solid var(--primary)',
+                      padding: '6px 10px',
+                      borderRadius: '4px',
+                      fontFamily: 'Poppins',
+                      cursor: 'pointer',
+                      fontSize: '1em',
+                      margin: '2px',
+                      position: 'relative'
+                    }}
+                  >
                     {typeOption}
-                  </option>
+                  </button>
                 ))}
-              </select>
+              </div>
 
-              {/* Event Color Selection as Circles */}
               <label>Event Color:</label>
               <div className="color-picker">
-                {colorOptions.map((colorOption) => (
+                {colorOptions.map(colorOption => (
                   <div
                     key={colorOption}
                     className={`color-circle ${color === colorOption ? 'selected' : ''}`}
