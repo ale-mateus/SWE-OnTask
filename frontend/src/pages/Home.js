@@ -26,6 +26,7 @@ const Home = () => {
         end: event.end,
         backColor: event.color || "#ffffff",
         participants: event.participants || 0,
+        type: event.type
       }));
       console.log("Mapped Events Array: ", mappedEvents); 
       eventDispatch({ type: 'SET_EVENTS', payload: mappedEvents });
