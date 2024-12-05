@@ -6,7 +6,7 @@ const ClassroomForm = () => {
   const { dispatch } = useClassContext();
   const { user } = useAuthContext();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(user.email);
   const [code, setCode] = useState('');
   const [classroomName, setClassroomName] = useState('');
   const [error, setError] = useState(null);
@@ -49,6 +49,30 @@ const ClassroomForm = () => {
 
         window.location.reload(); // Reload the page to reflect the new class
       }
+
+      // response again
+      const responseTwo = await fetch('/api/user', {
+        method: 'PATCH', // or PUT depending on your API design
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+            email: user.email,  // Include the user's email for identification
+            newCode: code,   // Include the new code
+          }),
+      });
+
+      const jsonTwo = await responseTwo.json();
+
+      if (!responseTwo.ok) {
+        throw new Error(jsonTwo.error || 'Failed to update code');
+      }
+      else {
+        localStorage.setItem('class', JSON.stringify(jsonTwo));
+        dispatch({ type: 'UPDATE_CODE', payload: { code: code } });
+      }
+
     } catch (error) {
       console.error('Fetch error:', error);
       setError('An error occurred while creating the class.');
@@ -82,10 +106,8 @@ const ClassroomForm = () => {
                 value={code}
               />
 
-                <label>Class Email:</label>
               <input
-                type="text"
-                onChange={(e) => setEmail(e.target.value)}
+                type="hidden"
                 value={email}
               />
 
