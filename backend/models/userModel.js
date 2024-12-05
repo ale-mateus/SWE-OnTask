@@ -8,7 +8,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: false
   },
   password: {
     type: String,
@@ -19,11 +19,16 @@ const userSchema = new Schema({
     required: false,
     enum: ['student', 'teacher'], // restrict role to either 'student' or 'teacher'
     default: 'student' // set default role to 'student'
+  },
+  code: {
+    type: String,
+    required: false,
+    default: ''
   }
 });
 
 // static signup method
-userSchema.statics.signup = async function(email, password, role = 'student') {
+userSchema.statics.signup = async function(email, password, role = 'student', code = '') {
 
   // validation
   if (!email || !password) {
@@ -45,7 +50,7 @@ userSchema.statics.signup = async function(email, password, role = 'student') {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
-  const user = await this.create({ email, password: hash, role });
+  const user = await this.create({ email, password: hash, role, code });
 
   return user;
 };
