@@ -7,12 +7,7 @@ import ClassroomForm from '../components/ClassroomForm';
 import JoinClass from '../components/JoinClass';
 
 const Navbar = ({ fetchEvents }) => {
-  const { logout } = useLogout();
   const { user } = useAuthContext();
-
-  const handleClick = () => {
-    logout();
-  };
 
   return (
     <header>
@@ -31,7 +26,6 @@ const Navbar = ({ fetchEvents }) => {
           {user ? (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <span>{user.email}</span>
-              <button onClick={handleClick} style={{ marginLeft: '1rem' }}>Log out</button>
               {user.role === 'teacher' && (
                 <div style={{ marginLeft: '1rem' }}>
                   {!user.code && <ClassroomForm />}

@@ -210,21 +210,35 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
       <DayPilotCalendar {...config} />
 
       {isModalOpen && selectedEvent && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h1>Event Info</h1>
-            <h3>Event Title:</h3>
-            <p>{selectedEvent.text}</p>
+        <div className="emodal-overlay">
+          <div className="emodal-content">
+            <h1 className="emodal-title">Event Info</h1>
 
-            <h3>Event Type:</h3>
-            <p>{selectedEvent.type}</p>
+            <div className="emodal-section">
+              <h3 className="emodal-label">Event Title:</h3>
+              <p className="emodal-info">{selectedEvent.text}</p>
+            </div>
 
-            <h3>Event Color:</h3>
-            <p>{selectedEvent.backColor}</p>
 
-            <h3>Date/Time:</h3>
-            <p>Start: {new Date(selectedEvent.start).toLocaleString()}</p>
-            <p>End: {new Date(selectedEvent.end).toLocaleString()}</p>
+            <div className="emodal-section">
+              <h3 className="emodal-label">Event Type:</h3>
+              <p className="emodal-info">{selectedEvent.type}</p>
+            </div>
+
+            <div className="emodal-section">
+              <h3 className="emodal-label">Event Color:</h3>
+              <div className="emodal-color-preview" style={{ backgroundColor: selectedEvent.backColor }}/>
+            </div>
+
+            <div className="emodal-section">
+              <h3 className="emodal-label">Date/Time:</h3>
+              <div className="emodal-info">
+                <p>Start: {new Date(selectedEvent.start).toLocaleString()}</p>
+                <p>End: {new Date(selectedEvent.end).toLocaleString()}</p>
+              </div>
+              {console.log(selectedEvent.start.toString())}
+            </div>
+
 
             <button type="button" onClick={closeModal} className="close-modal">
               Close
@@ -232,6 +246,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
           </div>
         </div>
       )}
+
 
       {isEditModalOpen && selectedEvent && (
         <div className="modal-overlay">
