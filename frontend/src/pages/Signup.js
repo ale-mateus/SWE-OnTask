@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 
 const Signup = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signup, error, isLoading } = useSignup();
@@ -11,12 +12,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await signup(email, password, selectedRole, code);
+    await signup(email, password, selectedRole, code, name);
+    window.location.reload();
   };
 /*
   const handleClassClick = async (e) => {
     e.preventDefault()
-
     await signupClass(email, classroomName, code);
   }*/
 
@@ -27,10 +28,14 @@ const Signup = () => {
   return (
     <form className="signup" onSubmit={handleSubmit}>
       <h3>Sign Up</h3>
-      
+
       <label>Name:</label>
-      <input type="text" name="name" required />
-      
+      <input 
+        type="text" 
+        onChange={(e) => setName(e.target.value)} 
+        value={name} 
+      />
+
       <label>Email address:</label>
       <input 
         type="email" 
@@ -49,7 +54,7 @@ const Signup = () => {
         type="hidden"  
         value={code} 
       />
-      
+
       <div className="RoleButtonsContainer">
         <button 
           className={`role-button ${selectedRole === 'student' ? 'active' : ''}`} 
@@ -66,13 +71,14 @@ const Signup = () => {
           I'm a Teacher
         </button>
       </div>
-      
+
       <button disabled={isLoading}>Sign up</button>
           {error && <div className="error">{error}</div>}
         </form>
 
 );
 };
+
 
 
 export default Signup;
