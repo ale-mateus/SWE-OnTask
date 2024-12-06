@@ -1,5 +1,5 @@
 const express = require('express');
-const { createClassroom } = require('../controllers/classController');
+const { createClassroom, getClassroomByEmail } = require('../controllers/classController');
 const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router();
@@ -9,5 +9,8 @@ router.use(requireAuth);
 
 // POST a new classroom
 router.post('/', createClassroom);
+
+// GET classroom by email
+router.get('/by-email', getClassroomByEmail);
 
 module.exports = router;

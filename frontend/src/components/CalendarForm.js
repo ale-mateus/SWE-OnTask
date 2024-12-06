@@ -45,7 +45,7 @@ const EventForm = () => {
       type,
       start: start.toISOString(),
       end: end.toISOString(),
-      classroom
+      classroom: 'default'
     };
 
     try {
