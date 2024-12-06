@@ -73,7 +73,6 @@ const Home = () => {
     } else {
       console.error("Failed to edit event");
     }
-
     window.location.reload();
   };
 

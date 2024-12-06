@@ -46,7 +46,6 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     const time = parts[1]; // The time part
     return { date, time };
   }
-
   const formattedEvents = events.map(event => ({
     id: event.id,
     text: event.text,
@@ -63,7 +62,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     durationBarVisible: false,
     startDate: startDate,
     events: formattedEvents,
-    
+
     onBeforeEventRender: args => {
       args.data.backColor = args.data.backColor || "#ffffff"; // Fallback to white if no color
       args.data.html = `
@@ -86,10 +85,9 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
           onDeleteEvent(eventId);
         } else if (onEditEvent && target.classList.contains("edit-icon")) {
           const event = formattedEvents.find(event => event.id === eventId);
-          
+
           const { date: eventStartDate, time: eventStartTime } = separateDateTime(event.start.toString());
           const { date: eventEndDate, time: eventEndTime } = separateDateTime(event.end.toString());
-
           setText(event.text);
           setType(event.type);
           setColor(event.backColor);
@@ -144,12 +142,11 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
   return (
     <div>
       <DayPilotCalendar {...config} />
-      
+
       {isModalOpen && selectedEvent && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h1>Event Info</h1>
-
             <h3>Event Title:</h3>
             <p>{selectedEvent.text}</p>
 
