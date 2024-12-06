@@ -1,5 +1,5 @@
 const express = require('express');
-const { createClassroom, getClassroomByEmail } = require('../controllers/classController');
+const { createClassroom, getClassroomByEmail, getClassroomByCode } = require('../controllers/classController');
 const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router();
@@ -12,5 +12,8 @@ router.post('/', createClassroom);
 
 // GET classroom by email
 router.get('/by-email', getClassroomByEmail);
+
+// GET classroom by code (Add this route)
+router.get('/by-code/:code', getClassroomByCode);
 
 module.exports = router;

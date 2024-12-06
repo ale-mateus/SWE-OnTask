@@ -49,4 +49,28 @@ const getClassroomByEmail = async (req, res) => {
   }
 };
 
-module.exports = { createClassroom, getClassroomByEmail };
+// Controller for fetching classroom by code
+const getClassroomByCode = async (req, res) => {
+  const { code } = req.params;  // Get the code from route parameters
+
+  if (!code) {
+    return res.status(400).json({ error: 'Classroom code is required' });
+  }
+
+  try {
+    const classroom = await Class.findOne({ code });
+
+    if (!classroom) {
+      return res.status(404).json({ error: 'No classroom found with this code' });
+    }
+
+    res.status(200).json(classroom);  // Send the found classroom data as response
+  } catch (error) {
+    console.error('Error fetching classroom by code:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+
+module.exports = { createClassroom, getClassroomByEmail, getClassroomByCode };

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useEventsContext } from "../hooks/useEventsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useClassContext } from '../hooks/useClassContext'; // Import the context
 
 const EventForm = () => {
   const { dispatch } = useEventsContext();
   const { user } = useAuthContext();
+  const { classroom } = useClassContext();  // Get the classroom context
 
   const [text, setText] = useState('');
   const [date, setDate] = useState('');
@@ -12,11 +14,19 @@ const EventForm = () => {
   const [endTime, setEndTime] = useState('');
   const [color, setColor] = useState('');
   const [type, setType] = useState('');
-  const [classroom, setClassroom] = useState(user.code);
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [typeOptions, setTypeOptions] = useState(['Homework', 'Test', 'Document', 'Other']);
+
+  // Initialize classroom state from the context
+  const [classroomCode, setClassroomCode] = useState(classroom ? classroom.code : '');
+
+  useEffect(() => {
+    if (classroom) {
+      setClassroomCode(classroom.code);  // Set the classroom code when the context is available
+    }
+  }, [classroom]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +38,11 @@ const EventForm = () => {
 
     if (!date || !startTime || !endTime || !type) {
       setError('Please fill in all fields');
+      return;
+    }
+
+    if (!classroomCode) {
+      setError('Must create class before making an event');
       return;
     }
 
@@ -45,7 +60,7 @@ const EventForm = () => {
       type,
       start: start.toISOString(),
       end: end.toISOString(),
-      classroom
+      classroom: classroomCode  // Use the classroom code from context
     };
 
     try {
@@ -60,7 +75,6 @@ const EventForm = () => {
 
       if (!response.ok) {
         const json = await response.json();
-        console.log(json)
         setError(json.error || 'Something went wrong');
         setEmptyFields(json.emptyFields || []);
       } else {
@@ -173,7 +187,7 @@ const EventForm = () => {
 
               <input 
                 type="hidden"
-                value={classroom}
+                value={classroomCode}
               />
 
               <button type="submit" className="submit">Add Event</button>

@@ -42,6 +42,7 @@ export const JoinClass = () => {
       }
       else {
         dispatch({ type: 'UPDATE_CODE', payload: { code: newCode } });
+
       }
 
     } catch (err) {
