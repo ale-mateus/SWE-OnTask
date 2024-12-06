@@ -9,6 +9,7 @@ import JoinClass from '../components/JoinClass';
 const Navbar = ({ fetchEvents }) => {
   const { user } = useAuthContext();
 
+  // navbar at the top of the screen
   return (
     <header>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
