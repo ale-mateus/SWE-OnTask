@@ -24,6 +24,8 @@ const Home = () => {
         end: event.end,
         backColor: event.color || "#ffffff",
         participants: event.participants || 0,
+        type: event.type,
+        classroom: event.classroom
       }));
       console.log("Mapped Events Array: ", mappedEvents); 
       eventDispatch({ type: 'SET_EVENTS', payload: mappedEvents });
@@ -69,6 +71,7 @@ const Home = () => {
     } else {
       console.error("Failed to edit event");
     }
+    window.location.reload();
   };
 
   return (
