@@ -17,7 +17,7 @@ const EventForm = () => {
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [typeOptions, setTypeOptions] = useState(['Homework', 'Test', 'Document', 'Other']);
+  let typeOptions = ['Homework', 'Test', 'Document', 'Other'];
 
   // Initialize classroom state from the context
   const [classroomCode, setClassroomCode] = useState(classroom ? classroom.code : '');

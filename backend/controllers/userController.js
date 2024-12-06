@@ -37,21 +37,19 @@ const signupUser = async (req, res) => {
   }
 };
 
-const updateCode = async (req, res) => {
-  const { email, newCode } = req.body;
-  console.log(email);
-  console.log(newCode);
+const updateUser = async (req, res) => {
+  const { email, newCode, parentCode } = req.body;
 
   // Validate inputs
-  if (!email || !newCode) {
-    return res.status(400).json({ error: 'Email and new code are required' });
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
   }
 
   try {
-    // Find user and update the code in one operation
+    // Find user and update the code and parentCode
     const updatedUser = await User.findOneAndUpdate(
       { email }, // Find user by email
-      { code: newCode }, // Update the code
+      { code: newCode, parentCode }, // Update both the code and the parent code
       { new: true } // Return the updated user
     );
 
@@ -59,11 +57,12 @@ const updateCode = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json({ message: 'Code updated successfully' });
+    res.status(200).json({ message: 'User updated successfully', user: updatedUser });
   } catch (err) {
-    console.error('Error updating code:', err); // Log error for debugging
-    res.status(500).json({ error: 'An error occurred while updating the code' });
+    console.error('Error updating user:', err); // Log error for debugging
+    res.status(500).json({ error: 'An error occurred while updating the user' });
   }
 }
 
-module.exports = { signupUser, loginUser, updateCode };
+
+module.exports = { signupUser, loginUser, updateUser };

@@ -28,6 +28,11 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: true
+  },
+  parentCode: {
+    type: String, // Add this field for parent code
+    required: false,
+    default: ''
   }
 });
 

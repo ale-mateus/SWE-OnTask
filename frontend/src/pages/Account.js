@@ -6,43 +6,43 @@ const Account = () => {
   const [classroomData, setClassroomData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [teacherCode, setTeacherCode] = useState("");
+  const [parentCode, setParentCode] = useState(""); // Added state for parent code
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState("");
 
   // Fetch classroom data for teacher or student
   useEffect(() => {
     if (user) {
-        console.log("user.code: ", user.code)
+      console.log("user.code: ", user.code);
       const fetchClassroom = async () => {
         try {
           let endpoint = "";
           if (user.role === "teacher") {
             endpoint = `/api/classes/by-email?email=${user.email}`;
-          } else if (user.role === "student" && user.code) {  // Use user.code instead of user.classroomCode
+          } else if (user.role === "student" && user.code) {
             endpoint = `/api/classes/by-code/${user.code}`;
-
           }
-  
+
           if (endpoint) {
-            console.log("Fetching data from endpoint:", endpoint);  // Add this log
+            console.log("Fetching data from endpoint:", endpoint);
             const response = await fetch(endpoint, {
               method: "GET",
               headers: {
                 Authorization: `Bearer ${user.token}`,
               },
             });
-  
+
             if (!response.ok) {
               throw new Error(`Failed to fetch classroom: ${response.status} ${response.statusText}`);
             }
-  
+
             const contentType = response.headers.get("Content-Type");
             if (contentType && contentType.includes("application/json")) {
               const data = await response.json();
-              console.log("Fetched data:", data);  // Add this log to check what data comes back
+              console.log("Fetched data:", data);
               setClassroomData(data);
             } else {
-              const errorText = await response.text();  // If not JSON, get the error page text
+              const errorText = await response.text();
               throw new Error(`Unexpected response format: ${errorText}`);
             }
           }
@@ -53,14 +53,13 @@ const Account = () => {
           setLoading(false);
         }
       };
-  
+
       fetchClassroom();
     }
   }, [user]);
-  
 
   // Handle teacher code input submission for students
-  const handleSubmit = async (e) => {
+  const handleTeacherCodeSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess("");
@@ -80,8 +79,8 @@ const Account = () => {
           Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
-          email: user.email, // Include the user's email for identification
-          newCode: teacherCode, // Use the entered teacher's code
+          email: user.email,
+          newCode: teacherCode,
         }),
       });
 
@@ -96,11 +95,58 @@ const Account = () => {
       dispatch({ type: "LOGIN", payload: updatedUser });
       localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      console.log("Classroom data after join:", json);  // Add this log to see the classroom data
+      console.log("Classroom data after join:", json);
       setClassroomData(json);
       setSuccess("Successfully joined the class!");
     } catch (err) {
       console.error("Error joining class:", err);
+      setError(err.message || "An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle parent code input submission for students
+  const handleParentCodeSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess("");
+    setLoading(true);
+
+    if (!user) {
+      setError("User is not logged in");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/user/", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          email: user.email,
+          parentCode: parentCode, // Sending parent code here
+        }),
+      });
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        throw new Error(json.error || "Failed to link to the parent.");
+      }
+
+      // Update user context and local storage
+      const updatedUser = { ...user, parentCode: parentCode };
+      dispatch({ type: "LOGIN", payload: updatedUser });
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      console.log("Parent code data after join:", json);
+      setSuccess("Successfully linked to the parent!");
+    } catch (err) {
+      console.error("Error linking to parent:", err);
       setError(err.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -121,7 +167,7 @@ const Account = () => {
       <p>Account Type: {user.role}</p>
       <p>Name: {user.name}</p>
       <p>Email: {user.email}</p>
-      
+
       {user.role === "teacher" && (
         <>
           {classroomData ? (
@@ -138,7 +184,7 @@ const Account = () => {
       {user.role === "student" && (
         <>
           {!classroomData && (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleTeacherCodeSubmit}>
               <label>
                 Enter Teacher's Code:
                 <input
@@ -161,6 +207,22 @@ const Account = () => {
             </>
           ) : (
             <p>No classroom associated yet.</p>
+          )}
+
+          {/* Parent Code Form */}
+          {!user.parentCode && (
+            <form onSubmit={handleParentCodeSubmit}>
+              <label>
+                Enter Parent's Code:
+                <input
+                  type="text"
+                  value={parentCode}
+                  onChange={(e) => setParentCode(e.target.value)}
+                  required
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
           )}
         </>
       )}

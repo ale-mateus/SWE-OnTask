@@ -13,7 +13,7 @@ const Signup = () => {
     e.preventDefault();
 
     await signup(email, password, selectedRole, code, name);
-    window.location.reload();
+        window.location.reload();
 
   };
 /*
@@ -53,6 +53,7 @@ const Signup = () => {
 
       <input 
         type="hidden"  
+        onChange={(e) => setCode(e.target.value)}
         value={code} 
       />
 

@@ -124,6 +124,7 @@ const ClassroomForm = () => {
 
               <input
                 type="hidden"
+                onChange={(e) => setEmail(e.target.value)}
                 value={email}
               />
 
