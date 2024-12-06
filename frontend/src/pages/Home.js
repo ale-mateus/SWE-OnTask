@@ -17,9 +17,10 @@ const Home = () => {
       headers: { 'Authorization': `Bearer ${user.token}` },
     });
     const json = await response.json();
-
+  
     if (response.ok) {
-      const mappedEvents = json.map(event => ({
+      const filteredEvents = json.filter(event => event.classroom === user.code); // Filter by classroom
+      const mappedEvents = filteredEvents.map(event => ({
         id: event._id,
         text: event.text,
         start: event.start,
@@ -27,14 +28,15 @@ const Home = () => {
         backColor: event.color || "#ffffff",
         participants: event.participants || 0,
         type: event.type,
-        classroom: event.classroom
+        classroom: user.code
       }));
-      console.log("Mapped Events Array: ", mappedEvents); 
+      console.log("Mapped and Filtered Events Array: ", mappedEvents); 
       eventDispatch({ type: 'SET_EVENTS', payload: mappedEvents });
     } else {
       console.error("Error fetching events:", json);
     }
-  }, [user, eventDispatch]);
+  }, [user, eventDispatch, classroom]);
+  
 
   useEffect(() => {
     if (user) {
