@@ -40,6 +40,13 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     'Purple', 'BlueViolet', 'RoyalBlue', 'DarkBlue', 'ForestGreen'
   ];
 
+  function separateDateTime(dateTime) {
+    const parts = dateTime.split('T');
+    const date = parts[0]; // The date part
+    const time = parts[1]; // The time part
+    return { date, time };
+  }
+
   const formattedEvents = events.map(event => ({
     id: event.id,
     text: event.text,
@@ -80,12 +87,15 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
         } else if (onEditEvent && target.classList.contains("edit-icon")) {
           const event = formattedEvents.find(event => event.id === eventId);
           
+          const { date: eventStartDate, time: eventStartTime } = separateDateTime(event.start.toString());
+          const { date: eventEndDate, time: eventEndTime } = separateDateTime(event.end.toString());
+
           setText(event.text);
           setType(event.type);
           setColor(event.backColor);
-          setDate(event.startDate);
-          setStartTime();
-          setEndTime();
+          setDate(eventStartDate);
+          setStartTime(eventStartTime);
+          setEndTime(eventEndTime);
           setClassroom(event.classroom);
 
           openEditModal(event);
@@ -139,7 +149,6 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h1>Event Info</h1>
-            {console.log(selectedEvent)}
 
             <h3>Event Title:</h3>
             <p>{selectedEvent.text}</p>
@@ -153,6 +162,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
             <h3>Date/Time:</h3>
             <p>Start: {new Date(selectedEvent.start).toLocaleString()}</p>
             <p>End: {new Date(selectedEvent.end).toLocaleString()}</p>
+            {console.log(selectedEvent.start.toString())}
 
             <button type="button" onClick={closeModal} className="close-modal">
               Close
@@ -164,6 +174,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
       {isEditModalOpen && selectedEvent && (
         <div className="modal-overlay">
           <div className="modal-content">
+            {console.log('Modal values:', date, startTime, endTime)}
           <form className="edit-event" onSubmit={handleSubmit}>
               <h3>Edit Event</h3>
 
