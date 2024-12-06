@@ -12,7 +12,6 @@ const Account = () => {
   // Fetch classroom data for teacher or student
   useEffect(() => {
     if (user) {
-        console.log("user.code: ", user.code)
       const fetchClassroom = async () => {
         try {
           let endpoint = "";
@@ -66,6 +65,7 @@ const Account = () => {
     setSuccess("");
     setLoading(true);
 
+    // verify user
     if (!user) {
       setError("User is not logged in");
       setLoading(false);
@@ -73,6 +73,7 @@ const Account = () => {
     }
 
     try {
+      // patch the user code
       const response = await fetch("/api/user", {
         method: "PATCH",
         headers: {
@@ -87,7 +88,7 @@ const Account = () => {
 
       const json = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok) { // handle patch failure
         throw new Error(json.error || "Failed to join the class.");
       }
 
@@ -96,7 +97,6 @@ const Account = () => {
       dispatch({ type: "LOGIN", payload: updatedUser });
       localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      console.log("Classroom data after join:", json);  // Add this log to see the classroom data
       setClassroomData(json);
       setSuccess("Successfully joined the class!");
     } catch (err) {
@@ -115,6 +115,7 @@ const Account = () => {
     return <div>Please log in to view your account details.</div>;
   }
 
+  // account page
   return (
     <div className="account">
       <h1>Account Info</h1>

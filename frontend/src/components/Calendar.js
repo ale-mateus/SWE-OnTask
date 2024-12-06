@@ -13,23 +13,26 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
   const [isCodeCorrect, setIsCodeCorrect] = useState(false);  // Track if code is correct
 
 
+  // opens modal for event info
   const openModal = (event) => {
     setSelectedEvent(event);
     setIsModalOpen(true);
   };
 
-  const closeModal = () => setIsModalOpen(false);
-  const closeParentVerificationModal = () => setIsParentVerificationModalOpen(false);
+  const closeModal = () => setIsModalOpen(false); // function to close event info modal
+  const closeParentVerificationModal = () => setIsParentVerificationModalOpen(false); // closes parent verification modal
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  // function to open edit event modal
   const openEditModal = (event) => {
     setSelectedEvent(event);
     setIsEditModalOpen(true);
   };
 
-  const closeEditModal = () => setIsEditModalOpen(false);
+  const closeEditModal = () => setIsEditModalOpen(false); // function to close edit event modal
 
+  // state variables to help with form submission
   const [text, setText] = useState('');
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -46,6 +49,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     'Purple', 'BlueViolet', 'RoyalBlue', 'DarkBlue', 'ForestGreen'
   ];
 
+  // separates the date and time string into two strings
   function separateDateTime(dateTime) {
     const parts = dateTime.split('T');
     const date = parts[0];
@@ -53,6 +57,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     return { date, time };
   }
 
+  // maps events
   const formattedEvents = events.map(event => ({
     id: event.id,
     text: event.text,
@@ -64,6 +69,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     classroom: event.classroom
   }));
 
+  // configures the calendar based on user role
   const config = {
     viewType: "Week",
     durationBarVisible: false,
@@ -109,6 +115,7 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
     }
     ,
   
+    // when the user clicks on the event
     onEventClick: args => {
       const target = args.originalEvent.target;
     
@@ -122,11 +129,15 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
       if (onDeleteEvent || onEditEvent) {
         const eventId = args.e.id();
     
+        // handles if delete is clicked
         if (onDeleteEvent && target.classList.contains("delete-icon")) {
           onDeleteEvent(eventId);
+
+          // handles if the edit icon is clicked
         } else if (onEditEvent && target.classList.contains("edit-icon")) {
           const event = formattedEvents.find(event => event.id === eventId);
     
+          // sets the forms default values to the current event info
           const { date: eventStartDate, time: eventStartTime } = separateDateTime(event.start.toString());
           const { date: eventEndDate, time: eventEndTime } = separateDateTime(event.end.toString());
           setText(event.text);
@@ -137,9 +148,10 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
           setEndTime(eventEndTime);
           setClassroom(event.classroom);
     
+          // opens the event modal
           openEditModal(event);
         } else {
-          console.log(isParentCodeVerified);
+          // opens the event info modal
           const event = formattedEvents.find(event => event.id === eventId);
           openModal(event);
         }
@@ -251,8 +263,9 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
       {isEditModalOpen && selectedEvent && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <form className="edit-event" onSubmit={handleSubmit}>
+            <form className="create" onSubmit={handleSubmit}>
               <h3>Edit Event</h3>
+
               <label>Event Title:</label>
               <input
                 type="text"
@@ -266,7 +279,20 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
                   <button
                     key={typeOption}
                     type="button"
+                    className="event-type-button"
                     onClick={() => setType(typeOption)}
+                    style={{
+                      background: type === typeOption ? 'var(--primary)' : '#fff',
+                      color: type === typeOption ? '#fff' : 'var(--primary)',
+                      border: '2px solid var(--primary)',
+                      padding: '6px 10px',
+                      borderRadius: '4px',
+                      fontFamily: 'Poppins',
+                      cursor: 'pointer',
+                      fontSize: '1em',
+                      margin: '2px',
+                      position: 'relative'
+                    }}
                   >
                     {typeOption}
                   </button>
@@ -274,21 +300,19 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
               </div>
 
               <label>Event Color:</label>
-              <div className="event-colors">
+              <div className="color-picker">
                 {colorOptions.map(colorOption => (
-                  <button
+                  <div
                     key={colorOption}
-                    type="button"
-                    onClick={() => setColor(colorOption)}
+                    className={`color-circle ${color === colorOption ? 'selected' : ''}`}
                     style={{ backgroundColor: colorOption }}
+                    onClick={() => setColor(colorOption)}
                   />
                 ))}
               </div>
 
-              <label>Classroom:</label>
               <input
-                type="text"
-                onChange={(e) => setClassroom(e.target.value)}
+                type="hidden"
                 value={classroom}
               />
 
@@ -313,12 +337,13 @@ const Calendar = ({ startDate, events, onDeleteEvent, onEditEvent }) => {
                 value={endTime}
               />
 
-              <button type="submit">Save</button>
-            </form>
+              <button type="submit" className="submit">Save</button>
+              {error && <div className="error">{error}</div>}
 
-            <button type="button" onClick={closeEditModal} className="close-modal">
-              Close
-            </button>
+              <button type="button" onClick={closeEditModal} className="submit">
+                Close
+              </button>
+            </form>
           </div>
         </div>
       )}

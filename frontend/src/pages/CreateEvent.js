@@ -1,4 +1,4 @@
-import { useState } from "react"
+/*import { useState } from "react"
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
 import { useAuthContext } from '../hooks/useAuthContext'
 
@@ -15,6 +15,7 @@ const CreateEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    // verify user
     if (!user) {
       setError('You must be logged in')
       return
@@ -80,4 +81,4 @@ const CreateEvent = () => {
   )
 }
 
-export default CreateEvent
+export default CreateEvent*/

@@ -18,7 +18,6 @@ const HamburgerMenu = () => {
         <div className="hamburger-menu">
             <Hamburger toggled={isOpen} toggle={setOpen} size={24} />
           <nav className="menu-content">
-            {/* Add links here once Account and Calendar pages are developed */}
             <Link to="/account">Account</Link>
             <Link to="/">Calendar</Link>
             <Link to="/" onClick={handleClick}>Log out</Link>
