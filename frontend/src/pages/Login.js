@@ -10,6 +10,7 @@ const Login = () => {
     e.preventDefault()
 
     await login(email, password)
+    window.location.reload();
   }
 
   return (

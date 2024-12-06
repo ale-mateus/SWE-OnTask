@@ -13,6 +13,7 @@ const Signup = () => {
     e.preventDefault();
 
     await signup(email, password, selectedRole, code, name);
+    window.location.reload();
   };
 /*
   const handleClassClick = async (e) => {
