@@ -1,5 +1,6 @@
 const Class = require('../models/classModel');
 
+// Controller for creating a classroom
 const createClassroom = async (req, res) => {
   console.log("Request received:", req.body); // Log the request body to see what was sent
   console.log("Authenticated user:", req.user); // Log the authenticated user (should be populated by requireAuth)
@@ -26,4 +27,26 @@ const createClassroom = async (req, res) => {
   }
 };
 
-module.exports = { createClassroom };
+// Controller for fetching classroom by email
+const getClassroomByEmail = async (req, res) => {
+  const { email } = req.query; // Get the email from query parameters
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  try {
+    const classroom = await Class.findOne({ email });
+
+    if (!classroom) {
+      return res.status(404).json({ error: 'No classroom found for this email' });
+    }
+
+    res.status(200).json(classroom); // Send the found classroom data as response
+  } catch (error) {
+    console.error('Error fetching classroom:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+module.exports = { createClassroom, getClassroomByEmail };
